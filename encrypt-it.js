@@ -65,20 +65,18 @@
     * @param {string} text The input text to encrypt.
     * @return {string} The encrypted text.
     */
-   function shiftCipher(text) {
-      let result = "";
-      for (let i = 0; i < text.length; i++) {
-         if (text[i] < 'a' || text[i] > 'z') {
-            result += text[i];
-         } else if (text[i] === 'z') {
-            result += 'a';
-         } else {
-            let letter = text.charCodeAt(i);
-            let resultLetter = String.fromCharCode(letter + 1);
-            result += resultLetter;
+   function encrypt(inputText) {
+      let encryptedText = "";
+      for (let i = 0; i < inputText.length; i++) {
+         let char = inputText.charAt(i);
+         if (char >= 'a' && char <= 'z') {
+            char = String.fromCharCode((char.charCodeAt(0) - 97 + 1) % 26 + 97);
+         } else if (char >= 'A' && char <= 'Z') {
+            char = String.fromCharCode((char.charCodeAt(0) - 65 + 1) % 26 + 65);
          }
+         encryptedText += char;
       }
-      return result;
+      return encryptedText;
    }
 
 })();
