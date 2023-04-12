@@ -17,6 +17,9 @@
       for (let i = 0; i < fontSize.length; i++) {
          fontSize[i].addEventListener("change", handleFontChange);
       }
+      
+      const allCapsCheckbox = document.getElementById("all-caps");
+      allCapsCheckbox.addEventListener("change", handleAllCaps);
    }
 
    /**
@@ -32,7 +35,7 @@
       const inputText = textarea.value;
 
       // Encrypt the text using the shift cipher
-      const encryptedText = encrypt(inputText);
+      const encryptedText = shiftCipher(inputText);
 
       // Output the encrypted text to the #result paragraph
       const result = document.querySelector("#result");
@@ -65,18 +68,31 @@
     * @param {string} text The input text to encrypt.
     * @return {string} The encrypted text.
     */
-   function encrypt(inputText) {
-      let encryptedText = "";
-      for (let i = 0; i < inputText.length; i++) {
-         let char = inputText.charAt(i);
-         if (char >= 'a' && char <= 'z') {
-            char = String.fromCharCode((char.charCodeAt(0) - 97 + 1) % 26 + 97);
-         } else if (char >= 'A' && char <= 'Z') {
-            char = String.fromCharCode((char.charCodeAt(0) - 65 + 1) % 26 + 65);
-         }
-         encryptedText += char;
+   function shiftCipher(text) {
+      text = text.toLowerCase();
+      let result = "";
+      for (let i = 0; i < text.length; i++) {
+         if (text[i] < 'a' || text[i] > 'z') {
+         result += text[i];
+         } 
+         else if (text[i] == 'z') {
+         result += 'a';
+         } 
+         else { // letter is between 'a' and 'y'
+         let letter = text.charCodeAt(i);
+         let resultLetter = String.fromCharCode(letter + 1);
+         result += resultLetter;
       }
-      return encryptedText;
+   }
+      return result;
+   }
+   
+   /**
+    * Handles the change event on the allCaps checkbox.
+    */
+   function handleAllCaps() {
+      const output = document.getElementById("result");
+      output.style.textTransform = this.checked ? "uppercase" : "none";
    }
 
 })();
